@@ -18,7 +18,6 @@ from six.moves.urllib import request
 from cryptography.x509 import load_pem_x509_certificate
 from cryptography.hazmat.backends import default_backend
 
-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -31,7 +30,6 @@ SECRET_KEY = '#2hkd(ay*))!!nx3_z4w(*li_2d=72ah!1e^#a7py6h9qi#gfq'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-
 API_IDENTIFIER = "https://store/api/"
 
 AUTH_DOMAIN = "https://web-store-manager.au.auth0.com/"
@@ -40,6 +38,7 @@ ALLOWED_HOSTS = [
     "localhost",
     "web-store-manager.herokuapp"
 ]
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -50,6 +49,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'djmoney',  
     'api',
     'auth0authorization'
 ]
