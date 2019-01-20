@@ -1,6 +1,5 @@
-#!/bin/sh
-'''exec' "/home/jonathanjojo/Documents/Web Store Manager/Store_Manager/env/bin/python" "$0" "$@"
-' '''
+#!/home/dep/Development/belajar/web-js/web-store/Web-Store-Manager/env/bin/python3
+
 # -*- coding: utf-8 -*-
 import re
 import sys

@@ -94,8 +94,8 @@ JWT_AUTH = {
         'auth0authorization.user.jwt_get_username_from_payload_handler',
     'JWT_PUBLIC_KEY': publickey,
     'JWT_ALGORITHM': 'RS256',
-    'JWT_AUDIENCE': 'YOUR_API_IDENTIFIER',
-    'JWT_ISSUER': 'YOUR_AUTH0_DOMAIN',
+    'JWT_AUDIENCE': API_IDENTIFIER,
+    'JWT_ISSUER': AUTH_DOMAIN,
     'JWT_AUTH_HEADER_PREFIX': 'Bearer',
 }
 
