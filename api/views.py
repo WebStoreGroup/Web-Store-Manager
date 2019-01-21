@@ -59,3 +59,7 @@ class TransactionListView(generics.ListCreateAPIView):
     )
     search_fields = ('customer__name', 'customer__email', 'transaction_items__item__name', 'transaction_items__item__description')
     filter_fields = ('customer__name', 'customer__email', 'transaction_items__item__name', 'transaction_items__item__description')
+
+class TransactionDetailRetrieveView(generics.RetrieveAPIView):
+    queryset = Transaction.objects.all()
+    serializer_class = TransactionSerializer

@@ -26,6 +26,7 @@ class CustomerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Customer
         fields = (
+            'id',
             'name',
             'email',
             'address',
@@ -53,6 +54,7 @@ class TransactionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Transaction
         fields = (
+            'id',
             'customer',
             'transaction_items',
             'datetime',
