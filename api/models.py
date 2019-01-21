@@ -50,6 +50,7 @@ class TransactionStatus(models.Model):
 class Transaction(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name="transactions")
     datetime = models.DateTimeField(auto_now_add=True)
+    status = models.ForeignKey(TransactionStatus, on_delete=models.CASCADE, related_name="transactions", default=1)
 
     class Meta:
         verbose_name_plural = "Transactions"
@@ -61,10 +62,10 @@ class Transaction(models.Model):
         return total
     
     def __str__(self):
-        return "Transaction {} - {}".format(self.id, self.customer)
+        return "[{}] Transaction {} / {}".format(self.status, self.id, self.customer)
 
 class TransactionItem(models.Model):
-    transaction = models.ForeignKey(Transaction, on_delete=models.CASCADE, related_name="items")
+    transaction = models.ForeignKey(Transaction, on_delete=models.CASCADE, related_name="transaction_items")
     item = models.OneToOneField(Item, on_delete=models.CASCADE)
     amount = models.PositiveIntegerField(default=1)
 

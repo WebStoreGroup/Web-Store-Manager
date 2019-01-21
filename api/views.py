@@ -18,7 +18,6 @@ from .serializers import (
     CustomerSerializer,
     TransactionStatusSerializer,
     TransactionSerializer,
-    TransactionItemSerializer,
 )
 
 # Create your views here.
@@ -36,6 +35,12 @@ class ItemListView(generics.ListCreateAPIView):
 class StockItemListView(generics.ListCreateAPIView):
     queryset = StockItem.objects.all()
     serializer_class = StockItemSerializer
+    filter_backends = (
+        DjangoFilterBackend,
+        filters.SearchFilter,
+    )
+    search_fields = ('item__name', 'item__description')
+    filter_fields = ('item__name', 'item__description')
 
 class CustomerListView(generics.ListCreateAPIView):
     queryset = Customer.objects.all()
@@ -48,3 +53,9 @@ class TransactionStatusListView(generics.ListCreateAPIView):
 class TransactionListView(generics.ListCreateAPIView):
     queryset = Transaction.objects.all()
     serializer_class = TransactionSerializer
+    filter_backends = (
+        DjangoFilterBackend,
+        filters.SearchFilter,
+    )
+    search_fields = ('customer__name', 'customer__email', 'transaction_items__item__name', 'transaction_items__item__description')
+    filter_fields = ('customer__name', 'customer__email', 'transaction_items__item__name', 'transaction_items__item__description')

@@ -14,7 +14,7 @@ class ItemSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class StockItemSerializer(serializers.ModelSerializer):
-    item = ItemSerializer(read_only=True)
+    item = ItemSerializer()
     class Meta:
         model = StockItem
         fields = (
@@ -37,22 +37,24 @@ class TransactionStatusSerializer(serializers.ModelSerializer):
         model = TransactionStatus
         fields = '__all__'
 
+class TransactionItemSerializer(serializers.ModelSerializer):
+    item = ItemSerializer()
+    class Meta:
+        model = TransactionItem
+        fields = (
+            'item',
+            'amount',
+        )
+
 class TransactionSerializer(serializers.ModelSerializer):
-    customer = CustomerSerializer(read_only=True)
-    status = TransactionStatusSerializer(read_only=True)
+    customer = CustomerSerializer()
+    status = TransactionStatusSerializer()
+    transaction_items = TransactionItemSerializer(many=True)
     class Meta:
         model = Transaction
         fields = (
             'customer',
+            'transaction_items',
             'datetime',
             'status'
-        )
-
-class TransactionItemSerializer(serializers.ModelSerializer):
-    item = ItemSerializer(read_only=True)
-    class Meta:
-        model = TransactionItem
-        fields = (
-            'item'
-            'amount'
         )
