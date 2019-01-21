@@ -29,6 +29,7 @@ class CustomerSerializer(serializers.ModelSerializer):
             'id',
             'name',
             'email',
+            'auth_id',
             'address',
             'phone_number'
         )
