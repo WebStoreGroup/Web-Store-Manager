@@ -3,6 +3,11 @@ from rest_framework.response import Response
 from rest_framework import filters, generics
 from django_filters.rest_framework import DjangoFilterBackend
 
+from rest_framework.permissions import (
+    AllowAny,
+    IsAuthenticated,
+)
+
 from .models import (
     Item,
     StockItem,
@@ -25,6 +30,7 @@ from .serializers import (
 class ItemListView(generics.ListCreateAPIView):
     queryset = Item.objects.all()
     serializer_class = ItemSerializer
+    permission_classes = (AllowAny, )
     filter_backends = (
         DjangoFilterBackend,
         filters.SearchFilter,
