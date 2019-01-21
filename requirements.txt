@@ -6,3 +6,5 @@ pyjwt
 python-dotenv
 python-jose
 gunicorn
+django-money
+django-filters
