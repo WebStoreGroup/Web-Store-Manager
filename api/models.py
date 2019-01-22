@@ -7,13 +7,26 @@ from djmoney.models.fields import MoneyField
 class Item(models.Model):
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=300)
-    price = MoneyField(decimal_places=2, default=0, default_currency='IDR', max_digits=13,)
+    price = MoneyField(decimal_places=2, default=0, default_currency='IDR', max_digits=13)
+    image = models.ImageField(blank=True, null=True)
+    rating = models.FloatField(default=0.0)
 
     class Meta:
         verbose_name_plural = "Items"
 
     def __str__(self):
         return self.name
+
+class PromoImage(models.Model):
+    title = models.CharField(max_length=100)
+    image = models.ImageField()
+    datetime = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name_plural = "Promo Images"
+
+    def __str__(self):
+        return "{} - {}".format(self.title, self.datetime)
 
 class StockItem(models.Model):
     item = models.OneToOneField(Item, on_delete=models.CASCADE)
@@ -38,6 +51,17 @@ class Customer(models.Model):
     
     def __str__(self):
         return "{} - {}".format(self.id, self.name)
+
+class ReviewComment(models.Model):
+    item = models.ForeignKey(Item, on_delete=models.CASCADE, related_name="review_comments")
+    customer = models.ForeignKey(Customer, blank=True, null=True, on_delete=models.SET_NULL, related_name="buyers")
+    comment = models.CharField(max_length=500)
+
+    class Meta:
+        verbose_name_plural = "Review Comments"
+
+    def __str__(self):
+        return "Comment ({}) - {} - {}".format(self.id, self.item, self.customer)
 
 class TransactionStatus(models.Model):
     status = models.CharField(max_length=20)
