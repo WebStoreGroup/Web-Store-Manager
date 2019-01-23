@@ -16,7 +16,7 @@ class ReviewCommentSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class ItemSerializer(serializers.ModelSerializer):
-    review_comments = ReviewCommentSerializer(many=True)
+    # review_comments = ReviewCommentSerializer(many=True)
     class Meta:
         model = Item
         fields = (
@@ -81,5 +81,6 @@ class TransactionSerializer(serializers.ModelSerializer):
             'customer',
             'transaction_items',
             'datetime',
-            'status'
+            'status',
+            'confirmation_image'
         )

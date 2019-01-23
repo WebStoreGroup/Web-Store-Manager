@@ -76,6 +76,7 @@ class Transaction(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name="transactions")
     datetime = models.DateTimeField(auto_now_add=True)
     status = models.ForeignKey(TransactionStatus, on_delete=models.CASCADE, related_name="transactions", default=1)
+    confirmation_image = models.ImageField(blank=True, null=True)
 
     class Meta:
         verbose_name_plural = "Transactions"
