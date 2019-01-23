@@ -7,6 +7,7 @@ from rest_framework.permissions import (
     AllowAny,
     IsAdminUser,
     IsAuthenticated,
+    SAFE_METHODS
 )
 from .models import (
     Item,
@@ -27,17 +28,22 @@ from .serializers import (
     TransactionStatusSerializer,
     TransactionSerializer,
 )
+from .permissions import (
+    ReadOnly,
+    IsOwner
+)
 
 # Create your views here.
 
 class PromoImageListView(generics.ListCreateAPIView):
     queryset = PromoImage.objects.all()
     serializer_class = PromoImageSerializer
-    permission_classes = (AllowAny, )
+    permission_classes = (IsAdminUser or ReadOnly,)
 
 class ItemListView(generics.ListCreateAPIView):
     queryset = StockItem.objects.all()
     serializer_class = StockItemSerializer
+    permission_classes = (IsAdminUser or ReadOnly,)
     filter_backends = (
         DjangoFilterBackend,
         filters.SearchFilter,
@@ -46,27 +52,36 @@ class ItemListView(generics.ListCreateAPIView):
     search_fields = ('item__name', 'item__description')
     ordering_fields = ('item__rating', 'item__price')
 
-    # TODO : filter amount != 0 for customers
-    # def get_queryset(self):
-    #     if user is not admin:
-    #         return StockItem.objects.filter(amount > 0)
-    #     return this.get_queryset()
+    def get_queryset(self):
+        if self.request.user.is_superuser:
+            return self.queryset
+        return StockItem.objects.filter(amount__gt=0)
 
 class CustomerListView(generics.ListCreateAPIView):
     queryset = Customer.objects.all()
     serializer_class = CustomerSerializer
+    permission_classes = (IsAdminUser,)
+
+class CustomerDetailRetrieveUpdateView(generics.RetrieveUpdateAPIView):
+    queryset = Customer.objects.all()
+    serializer_class = CustomerSerializer
+    permission_classes = (IsAdminUser or IsOwner,)
+    lookup_field = ('auth_id',)
 
 class ReviewCommentListView(generics.ListCreateAPIView):
     queryset = ReviewComment.objects.all()
     serializer_class = ReviewCommentSerializer
+    permission_classes = (IsAuthenticated or ReadOnly)
 
 class TransactionStatusListView(generics.ListCreateAPIView):
     queryset = TransactionStatus.objects.all()
     serializer_class = TransactionStatusSerializer
+    permission_classes = (IsAdminUser or ReadOnly,)
 
 class TransactionListView(generics.ListCreateAPIView):
     queryset = Transaction.objects.all()
     serializer_class = TransactionSerializer
+    permission_classes = (IsAdminUser,)
     filter_backends = (
         DjangoFilterBackend,
         filters.SearchFilter,
@@ -76,6 +91,7 @@ class TransactionListView(generics.ListCreateAPIView):
     filter_fields = ('status', )
     ordering_fields = ('status__status', 'datetime')
 
-class TransactionDetailRetrieveView(generics.RetrieveUpdateAPIView):
+class TransactionDetailRetrieveUpdateView(generics.RetrieveUpdateAPIView):
     queryset = Transaction.objects.all()
     serializer_class = TransactionSerializer
+    permission_classes = (IsAdminUser or IsOwner,)

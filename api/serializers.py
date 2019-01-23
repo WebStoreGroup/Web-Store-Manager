@@ -16,7 +16,6 @@ class ReviewCommentSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class ItemSerializer(serializers.ModelSerializer):
-    # review_comments = ReviewCommentSerializer(many=True)
     class Meta:
         model = Item
         fields = (
