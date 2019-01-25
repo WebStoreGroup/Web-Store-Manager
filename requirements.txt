@@ -7,4 +7,5 @@ python-dotenv
 python-jose
 gunicorn
 django-money
-django-filters
+django-filter
+django-cors-middleware
