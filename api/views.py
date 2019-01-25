@@ -27,6 +27,7 @@ from .permissions import (
     ReadOnly,
     IsAdmin,
     IsOwner,
+    IsAuthenticated
 )
 
 # Create your views here.
@@ -67,7 +68,7 @@ class CustomerDetailRetrieveUpdateView(generics.RetrieveUpdateAPIView):
 class ReviewCommentListView(generics.ListCreateAPIView):
     queryset = ReviewComment.objects.all()
     serializer_class = ReviewCommentSerializer
-    permission_classes = (IsAuthenticated|ReadOnly)
+    permission_classes = (IsAuthenticated|ReadOnly,)
 
 class TransactionStatusListView(generics.ListCreateAPIView):
     queryset = TransactionStatus.objects.all()
