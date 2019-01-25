@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import (
     Item,
+    ItemCategory,
     PromoImage,
     StockItem,
     Customer,
@@ -10,16 +11,23 @@ from .models import (
     TransactionItem
 )
 
+class ItemCategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ItemCategory
+        fields = '__all__'
+
 class ReviewCommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = ReviewComment
         fields = '__all__'
 
 class ItemSerializer(serializers.ModelSerializer):
+    category = ItemCategorySerializer()
     class Meta:
         model = Item
         fields = (
             'name',
+            'category',
             'description',
             'price',
             'image',
@@ -31,6 +39,7 @@ class PromoImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = PromoImage
         fields = (
+            'id',
             'image',
         )
 
@@ -39,6 +48,7 @@ class StockItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = StockItem
         fields = (
+            'id',
             'item',
             'amount'
         )
@@ -65,6 +75,7 @@ class TransactionItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = TransactionItem
         fields = (
+            'id',
             'item',
             'amount',
         )

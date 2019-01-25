@@ -4,8 +4,18 @@ from djmoney.models.fields import MoneyField
 
 # Create your models here.
 
+class ItemCategory(models.Model):
+    category = models.CharField(max_length=100)
+
+    class Meta:
+        verbose_name_plural = "Categories"
+
+    def __str__(self):
+        return self.category
+
 class Item(models.Model):
     name = models.CharField(max_length=100)
+    category = models.ForeignKey(ItemCategory, on_delete=models.CASCADE, related_name="items", default=3)
     description = models.CharField(max_length=300)
     price = MoneyField(decimal_places=2, default=0, default_currency='IDR', max_digits=13)
     image = models.ImageField(blank=True, null=True)

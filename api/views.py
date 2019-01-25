@@ -6,6 +6,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 
 from .models import (
     Item,
+    ItemCategory,
     PromoImage,
     StockItem,
     Customer,
@@ -16,6 +17,7 @@ from .models import (
 )
 from .serializers import (
     ItemSerializer,
+    ItemCategorySerializer,
     PromoImageSerializer,
     StockItemSerializer,
     CustomerSerializer,
@@ -32,6 +34,11 @@ from .permissions import (
 
 # Create your views here.
 
+class ItemCategoryListView(generics.ListCreateAPIView):
+    queryset = ItemCategory.objects.all()
+    serializer_class = ItemCategorySerializer
+    permission_classes = (IsAdmin|ReadOnly,)
+
 class PromoImageListView(generics.ListCreateAPIView):
     queryset = PromoImage.objects.all()
     serializer_class = PromoImageSerializer
@@ -46,7 +53,8 @@ class ItemListView(generics.ListCreateAPIView):
         filters.SearchFilter,
         filters.OrderingFilter
     )
-    search_fields = ('item__name', 'item__description')
+    search_fields = ('item__name', 'item__description', 'item__category__category')
+    filter_fields = ('item__category__category',)
     ordering_fields = ('item__rating', 'item__price')
 
     def get_queryset(self):
@@ -63,12 +71,12 @@ class CustomerDetailRetrieveUpdateView(generics.RetrieveUpdateAPIView):
     queryset = Customer.objects.all()
     serializer_class = CustomerSerializer
     permission_classes = (IsAdmin|IsOwner,)
-    lookup_field = ('auth_id',)
+    lookup_field = 'auth_id'
 
 class ReviewCommentListView(generics.ListCreateAPIView):
     queryset = ReviewComment.objects.all()
     serializer_class = ReviewCommentSerializer
-    permission_classes = (IsAuthenticated|ReadOnly,)
+    permission_classes = (IsAdmin|IsAuthenticated|ReadOnly,)
 
 class TransactionStatusListView(generics.ListCreateAPIView):
     queryset = TransactionStatus.objects.all()
