@@ -18,7 +18,6 @@ from six.moves.urllib import request
 from cryptography.x509 import load_pem_x509_certificate
 from cryptography.hazmat.backends import default_backend
 
-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -31,7 +30,6 @@ SECRET_KEY = '#2hkd(ay*))!!nx3_z4w(*li_2d=72ah!1e^#a7py6h9qi#gfq'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-
 API_IDENTIFIER = "https://store/api/"
 
 AUTH_DOMAIN = "https://web-store-manager.au.auth0.com/"
@@ -40,6 +38,7 @@ ALLOWED_HOSTS = [
     "localhost",
     "web-store-manager.herokuapp"
 ]
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -49,8 +48,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'rest_framework',
     'corsheaders',
+    'rest_framework',
+    'django_filters',
+    'djmoney',  
     'api',
     'auth0authorization'
 ]
@@ -63,10 +64,13 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.auth.middleware.RemoteUserMiddleware',
 ]
+
+CORS_ORIGIN_ALLOW_ALL = DEBUG
 
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
@@ -75,13 +79,15 @@ AUTHENTICATION_BACKENDS = [
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated',
+        'rest_framework.permissions.AllowAny',
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.BasicAuthentication',
     ),
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 100
 }
 
 jsonurl = request.urlopen(AUTH_DOMAIN + ".well-known/jwks.json")
@@ -171,6 +177,10 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+# Upload files media
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 # CORS
 
 CORS_ORIGIN_WHITELIST = [

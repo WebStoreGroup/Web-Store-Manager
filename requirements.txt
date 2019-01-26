@@ -8,3 +8,6 @@ pyjwt
 python-dotenv
 python-jose
 gunicorn
+django-money
+django-filter
+django-cors-middleware

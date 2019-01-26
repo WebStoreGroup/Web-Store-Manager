@@ -20,27 +20,27 @@ def get_token_auth_header(request):
     token = parts[1]
     return token
 
-# def requires_scope(required_scope):
-#     """Determines if the required scope is present in the Access Token
-#     Args:
-#         required_scope (str): The scope required to access the resource
-#     """
-#     def require_scope(f):
-#         @wraps(f)
-#         def decorated(*args, **kwargs):
-#             token = get_token_auth_header(args[0])
-#             unverified_claims = jwt.get_unverified_claims(token)
-#             token_scopes = unverified_claims["scope"].split()
-#             for token_scope in token_scopes:
-#                 if token_scope == required_scope:
-#                     return f(*args, **kwargs)
-#             response = JsonResponse({'message': 'You don\'t have access to this resource'})
-#             response.status_code = 403
-#             return response
-#         return decorated
-#     return require_scope
+def requires_scope(required_scope):
+    """Determines if the required scope is present in the Access Token
+    Args:
+        required_scope (str): The scope required to access the resource
+    """
+    def require_scope(f):
+        @wraps(f)
+        def decorated(*args, **kwargs):
+            token = get_token_auth_header(args[0])
+            unverified_claims = jwt.get_unverified_claims(token)
+            token_scopes = unverified_claims["scope"].split()
+            for token_scope in token_scopes:
+                if token_scope == required_scope:
+                    return f(*args, **kwargs)
+            response = JsonResponse({'message': 'You don\'t have access to this resource'})
+            response.status_code = 403
+            return response
+        return decorated
+    return require_scope
 
-# @api_view(['GET'])
-# @requires_scope('read:messages')
-# def private_scoped(request):
-#     return JsonResponse("Hello from a private endpoint! You need to be authenticated and have a scope of read:messages to see this.")
+@api_view(['GET'])
+@requires_scope('read:messages')
+def private_scoped(request):
+    return JsonResponse("Hello from a private endpoint! You need to be authenticated and have a scope of read:messages to see this.")
