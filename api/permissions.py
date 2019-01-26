@@ -1,12 +1,11 @@
 from django.contrib.auth.models import AnonymousUser
 from jose import jwt
-
 from rest_framework.permissions import (
     BasePermission,
     SAFE_METHODS
 )
-
 import datetime
+import requests
 
 def get_auth_id(sub):
     sub = sub[sub.rfind("|")+1:]
@@ -30,9 +29,8 @@ def is_admin(request):
     try :
         token = get_token_auth_header(request)
         claims = jwt.get_unverified_claims(token)
-        sub = get_auth_id(claims['sub'])
-        return sub == "105081646106925972448"
-        # TODO : Move to ENV
+        # TODO : move deploy/dev url to settings
+        return 'admin' in claims['https://localhost:8000/api/roles']
     except AttributeError:
         return request.user.is_superuser
 

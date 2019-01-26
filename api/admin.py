@@ -8,7 +8,8 @@ from .models import (
     ReviewComment,
     TransactionStatus,
     Transaction,
-    TransactionItem
+    TransactionItem,
+    Role
 )
 
 # Register your models here.
@@ -22,3 +23,4 @@ admin.site.register(ReviewComment)
 admin.site.register(TransactionStatus)
 admin.site.register(Transaction)
 admin.site.register(TransactionItem)
+admin.site.register(Role)

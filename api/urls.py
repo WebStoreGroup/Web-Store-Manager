@@ -11,6 +11,7 @@ from .views import (
     TransactionStatusListView,
     TransactionListView,
     TransactionDetailRetrieveUpdateView,
+    RoleListView,
 )
 
 app_name = "api"
@@ -25,4 +26,5 @@ urlpatterns = [
     path('statuses/', TransactionStatusListView.as_view(), name="status_list"),
     path('transactions/', TransactionListView.as_view(), name="transaction_list"),
     path('transactions/<int:pk>/', TransactionDetailRetrieveUpdateView.as_view(), name="transaction_detail"),
+    path('roles/', RoleListView.as_view(), name="role_list")
 ]

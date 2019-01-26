@@ -110,3 +110,16 @@ class TransactionItem(models.Model):
 
     def __str__(self):
         return "{} / {} ({})".format(self.transaction, self.item, self.amount)
+
+class Role(models.Model):
+    ROLES_CHOICE = (
+        ('CUSTOMER', 'Customer'),
+        ('ADMIN', 'Admin')
+    )
+    role = models.CharField(choices=ROLES_CHOICE, max_length=100)
+
+    class Meta:
+        verbose_name_plural = "Roles"
+    
+    def __str__(self):
+        return self.role

@@ -8,7 +8,8 @@ from .models import (
     ReviewComment,
     TransactionStatus,
     Transaction,
-    TransactionItem
+    TransactionItem,
+    Role
 )
 
 class ItemCategorySerializer(serializers.ModelSerializer):
@@ -93,4 +94,11 @@ class TransactionSerializer(serializers.ModelSerializer):
             'datetime',
             'status',
             'confirmation_image'
+        )
+
+class RoleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Role
+        fields = (
+            'role',
         )

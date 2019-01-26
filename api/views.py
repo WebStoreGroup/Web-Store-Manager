@@ -13,7 +13,8 @@ from .models import (
     ReviewComment,
     TransactionStatus,
     Transaction,
-    TransactionItem
+    TransactionItem,
+    Role
 )
 from .serializers import (
     ItemSerializer,
@@ -24,6 +25,7 @@ from .serializers import (
     ReviewCommentSerializer,
     TransactionStatusSerializer,
     TransactionSerializer,
+    RoleSerializer
 )
 from .permissions import (
     ReadOnly,
@@ -100,3 +102,8 @@ class TransactionDetailRetrieveUpdateView(generics.RetrieveUpdateAPIView):
     queryset = Transaction.objects.all()
     serializer_class = TransactionSerializer
     permission_classes = (IsAdmin|IsOwner,)
+
+class RoleListView(generics.ListCreateAPIView):
+    queryset = Role.objects.all()
+    serializer_class = RoleSerializer
+    permission_classes = (IsAdmin|ReadOnly,)
