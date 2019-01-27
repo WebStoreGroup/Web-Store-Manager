@@ -108,7 +108,7 @@ class TransactionDetailRetrieveUpdateView(generics.RetrieveUpdateAPIView):
         transaction = Transaction.objects.get(id=data['id'])
         item = Item.objects.get(id=data['rating']['item'])
         if (not transaction.transaction_items.rating) and (data['rating']):
-            item.update_rating(data)
+            item.update_rating(data['rating'])
             item.save()
             instance = serializer.save()
         if (not transaction.transaction_items.review_comment) and (data['review_comment']):
