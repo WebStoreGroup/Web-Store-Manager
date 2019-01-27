@@ -71,6 +71,7 @@ class CustomerSerializer(serializers.ModelSerializer):
             'auth_id',
             'address',
             'phone_number',
+            'transactions'
         )
 
 class TransactionStatusSerializer(serializers.ModelSerializer):
