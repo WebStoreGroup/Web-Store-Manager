@@ -103,6 +103,21 @@ class TransactionDetailRetrieveUpdateView(generics.RetrieveUpdateAPIView):
     serializer_class = TransactionSerializer
     permission_classes = (IsAdmin|IsOwner,)
 
+    def perform_update(self, serializer):
+        data = serializer.data
+        transaction = Transaction.objects.get(id=data['id'])
+        item = Item.objects.get(id=data['rating']['item'])
+        if (not transaction.transaction_items.rating) and (data['rating']):
+            item.update_rating(data)
+            item.save()
+            instance = serializer.save()
+        if (not transaction.transaction_items.review_comment) and (data['review_comment']):
+            ReviewComment.objects.create(
+                item = item,
+                customer = transaction.customer,
+                comment = data['review_comment']
+            )
+
 class RoleListView(generics.ListCreateAPIView):
     queryset = Role.objects.all()
     serializer_class = RoleSerializer

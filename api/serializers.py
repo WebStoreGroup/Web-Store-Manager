@@ -2,6 +2,7 @@ from rest_framework import serializers
 from .models import (
     Item,
     ItemCategory,
+    ItemRating,
     PromoImage,
     StockItem,
     Customer,
@@ -17,6 +18,11 @@ class ItemCategorySerializer(serializers.ModelSerializer):
         model = ItemCategory
         fields = '__all__'
 
+class ItemRatingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ItemRating
+        fields = '__all__'
+
 class ReviewCommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = ReviewComment
@@ -24,6 +30,7 @@ class ReviewCommentSerializer(serializers.ModelSerializer):
 
 class ItemSerializer(serializers.ModelSerializer):
     category = ItemCategorySerializer()
+    rating = ItemRatingSerializer()
     class Meta:
         model = Item
         fields = (
@@ -33,7 +40,7 @@ class ItemSerializer(serializers.ModelSerializer):
             'price',
             'image',
             'rating',
-            'review_comments'
+            'review_comments',
         )
 
 class PromoImageSerializer(serializers.ModelSerializer):
@@ -51,7 +58,7 @@ class StockItemSerializer(serializers.ModelSerializer):
         fields = (
             'id',
             'item',
-            'amount'
+            'amount',
         )
 
 class CustomerSerializer(serializers.ModelSerializer):
@@ -63,7 +70,7 @@ class CustomerSerializer(serializers.ModelSerializer):
             'email',
             'auth_id',
             'address',
-            'phone_number'
+            'phone_number',
         )
 
 class TransactionStatusSerializer(serializers.ModelSerializer):
@@ -79,6 +86,8 @@ class TransactionItemSerializer(serializers.ModelSerializer):
             'id',
             'item',
             'amount',
+            'rating',
+            'review_comment',
         )
 
 class TransactionSerializer(serializers.ModelSerializer):
@@ -93,7 +102,7 @@ class TransactionSerializer(serializers.ModelSerializer):
             'transaction_items',
             'datetime',
             'status',
-            'confirmation_image'
+            'confirmation_image',
         )
 
 class RoleSerializer(serializers.ModelSerializer):

@@ -13,19 +13,34 @@ class ItemCategory(models.Model):
     def __str__(self):
         return self.category
 
+
 class Item(models.Model):
     name = models.CharField(max_length=100)
     category = models.ForeignKey(ItemCategory, on_delete=models.CASCADE, related_name="items", default=3)
     description = models.CharField(max_length=300)
     price = MoneyField(decimal_places=2, default=0, default_currency='IDR', max_digits=13)
     image = models.ImageField(blank=True, null=True)
-    rating = models.FloatField(default=0.0)
 
     class Meta:
         verbose_name_plural = "Items"
 
     def __str__(self):
         return self.name
+
+class ItemRating(models.Model):
+    item = models.OneToOneField(Item, on_delete=models.CASCADE, related_name="rating")
+    rating = models.FloatField(default=0.0)
+    rater_number = models.PositiveIntegerField()
+
+    class Meta:
+        verbose_name_plural = "Item Ratings"
+
+    def __str__(self):
+        return "Rating of {} : {}".format(self.item, self.rating)
+
+    def update_rating(self, new_rating):
+        self.rating = (self.rating * self.rater_number + new_rating) / (self.rater_number + 1)
+        self.rater_number += 1
 
 class PromoImage(models.Model):
     title = models.CharField(max_length=100)
@@ -104,6 +119,8 @@ class TransactionItem(models.Model):
     transaction = models.ForeignKey(Transaction, on_delete=models.CASCADE, related_name="transaction_items")
     item = models.OneToOneField(Item, on_delete=models.CASCADE)
     amount = models.PositiveIntegerField(default=1)
+    rating = models.FloatField(blank=True, null=True)
+    review_comment = models.CharField(max_length=500, blank=True, null=True)
 
     class Meta:
         verbose_name_plural = "Transaction Items"
